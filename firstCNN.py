@@ -24,10 +24,20 @@ class Net(nn.Module):
     def forward(self,x):
         x = F.max_pool2d(F.relu(self.conv1(x)),(2,2))
         x = F.max_pool2d(F.relu(self.conv2(x)),(2,2))
+        x = x.view(-1, self.num_flat_features(x))#convert the dimension, if x original size is [4,5,6], the new size is [4, 30]. As 'size = x.size()[1:]' the first dimension 4 won't change
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
         return x
     
+    def num_flat_features(self, x):
+        size = x.size()[1:]
+        num_features = 1
+        for s in size:
+            num_features*=s
+        return num_features
 net = Net()
 print(net)
+params = list(net.parameters())#params: p[0]:conv1.weight p[1]:conv1.bias p[2]:conv2.weight p[3]:conv2.bias p[4]:fc1.weight 
+print(len(params))#10
+print(params[0].size())
