@@ -16,7 +16,7 @@ import torchvision.transforms as transforms
 net = Net()
 optimizer = optim.SGD(net.parameters(), lr =0.1)
 
-for i in range(1,30):
+for i in range(1,200):
     input = torch.ones(3,1,32,32)+2
     output = net(input)
     target = Variable(torch.ones(3,10))
