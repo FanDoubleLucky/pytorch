@@ -12,9 +12,9 @@ import torch.nn as nn
 from torch.autograd import Variable
 import torchvision
 import torchvision.transforms as transforms
-net = Net()
-optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-criterion = nn.CrossEntropyLoss()
+import math
+
+
 '''
 for epoch in range(1,100):
     input = torch.ones(1,3,32,32)+3
@@ -28,23 +28,25 @@ for epoch in range(1,100):
     print(loss)
 '''
 if __name__ == '__main__':
+    net = Net()
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                             download=False, transform=transform)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
-                                              shuffle=True, num_workers=2)
+    
     
     testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                            download=False, transform=transform)
     testloader = torch.utils.data.DataLoader(testset, batch_size=4,
                                              shuffle=False, num_workers=2)
     
-    iter(trainloader)
-    for epoch in range(2):  # 循环遍历数据集多次
-    
+    for epoch in range(5):  # 循环遍历数据集多次
+        optimizer = optim.Adam(net.parameters(), lr=0.001/(math.pow(2,epoch)), betas=(0.9,0.999))
+        criterion = nn.CrossEntropyLoss()
         running_loss = 0.0
         
+        trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
+                                              shuffle=True, num_workers=2)
         for i,data in enumerate(trainloader,0):
             # 得到输入数据
             
