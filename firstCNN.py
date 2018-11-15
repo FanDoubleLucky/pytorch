@@ -37,6 +37,8 @@ class Net(nn.Module):
             num_features*=s
         return num_features
     
+    
+
 
 #params = list(net.parameters())#params: p[0]:conv1.weight p[1]:conv1.bias p[2]:conv2.weight p[3]:conv2.bias p[4]:fc1.weight 
 #print(len(params))#10
